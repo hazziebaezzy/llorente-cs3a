@@ -1,58 +1,58 @@
 import streamlit as st
 
-st.balloons()
-st.header("Primitive Root🔐🔐")
+st.header("Primitive Root🔐")
 st.sidebar.write("Primitive Root🔐")
 
 st.write("Welcome to Primitive Root!!")
 
-q = int(input())
-g = int(input())
-
-values = []
-final_values = []
-primitive_frequency = {}
-flag = True
-
-def is_prime(num):
-    if num == 1:
+def is_prime(q):
+    if q < 2:
         return False
-    elif num > 1:
-        for i in range(2, num):
-            if (num % i) == 0:
-                return False
-        else:
-            return True
-    else:
-        return False
+    for i in range(2, int(q**0.5) + 1):
+        if q % i == 0:
+            return False
+    return True
+        
+def is_primitive(base, q):
+    powers = set()
+    result = 1
+    
+    for i in range(1, q):
+        result = (result * base) % q
+        powers.add(result)
+        st.write(f"{base}^{i} mod {q} = {result}", end=', ' if i < q - 1 else ' ')
+        
+        if result == 1:
+            break
+           
+    if powers == set(range(1, q)):
+        st.write(f"==> {base} is primitive root of {q},")
+        return True
+    st.write()
+    return False
+        
+def main():
+    q = int(st.number_input('Enter a prime number (q):', value=0))
+    g = int(st.number_input('Enter a number (g):', value=0))
 
-s_button = st.button('Submit', type='primary')
-if s_button:
-    if is_prime(q):
-        for i in range(1, q):
-            for j in range(1, q):
-                num1 = ((i ** j) % q)
-                if num1 not in primitive_frequency:
-                    st.write(f"{i}^{j} mod {q} = {num1}", end="")
-                    primitive_frequency[num1] = True
-                    values.append(num1)
-                else:
-                    flag = False
-                    break
-                if j != q - 1:
-                    st.write(",", end="")
-                    st.write(" ", end="")
-            if len(values) == q - 1:
-                st.write(f" ==> {i} is primitive root of {q},", end="")
-            st.write()
-            if len(values) == len(list(set(values))) and flag:
-                final_values.append(i)
-            primitive_frequency = {}
-            values = []
-            flag = True
-        if is_prime(g):
-            st.write(f"{g} is primitive root: {is_prime(g)} {final_values}")
+    if not q or not g:
+        st.warning("Please enter valid values for Modulus and Primitive.")
+        return
+    
+    s_button = st.button('Submit', type='primary')
+    if s_button:
+        if not is_prime(q):
+            st.warning(f"{q} is not a prime number!!") 
         else:
-            st.write(f"{g} is NOT primitive root of 11 - List of Primitive roots: {final_values}")
-    else:
-        st.write(f"{q} is not a prime number!!")
+            primitive_roots = []
+            for base in range(1, q):
+                if is_primitive(base, q):
+                    primitive_roots.append(base)
+                    
+            if g in primitive_roots:
+                st.write(f"{g} is primitive root: True", primitive_roots)
+            else:
+                st.write(f"{g} is NOT primitive root of {q} - List of Primitive roots:", primitive_roots)
+            
+if __name__ == '__main__':
+    main()
