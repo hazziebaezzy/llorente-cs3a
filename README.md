@@ -1,7 +1,7 @@
 # Welcome to streamlit
 
-This is the app you get when you run `streamlit hello`, extracted as its own app.
+By: Hazel Llorente
 
-Edit [Hello.py](./Hello.py) to customize this app to your heart's desire. ❤️
+Section: BSCS3A
 
-Check it out on [Streamlit Community Cloud](https://st-hello-app.streamlit.app/)
+[My Streamlit App](https://silver-xylophone-v6p69x777wrxhxq47-8501.app.github.dev/)
