@@ -21,3 +21,5 @@ def navi():
         st.page_link("pages/8_Blake2.py", label="BLAKE2", icon="🗝️", use_container_width=True)
     with columns2[3]:
         st.page_link("pages/9_RIPEMD-160.py", label="WHIRLPOOL", icon="🗝️", use_container_width=True)
+    with columns2[4]:
+        st.page_link("pages/Simple_Substitution_Cipher.py", label="SIMPLE SUBSTITUTION CIPHER", icon="🗝️", use_container_width=True)
