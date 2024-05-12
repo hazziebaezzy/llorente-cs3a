@@ -1,12 +1,6 @@
 import random
 import streamlit as st
 
-st.set_page_config(
-        page_title="Reverse Cipher",
-        page_icon="🔐",
-        layout="wide"
-    )
-
 # Function to perform modular exponentiation (base^exponent mod modulus)
 def mod_exp(base, exponent, modulus):
     result = 1
@@ -33,10 +27,6 @@ def compute_shared_secret(key, other_public_key, p):
     # Compute shared secret
     shared_secret = mod_exp(other_public_key, key, p)
     return shared_secret
-
-genre = st.selectbox(
-    "What type of content do you want?",
-    ["Text", "File"])
 
 # Streamlit app
 st.title("Diffie-Hellman Key Exchange")
