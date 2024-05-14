@@ -26,7 +26,7 @@ st.header('Deffie Hellman', divider='rainbow')
 on = st.toggle("Show History")
 
 if on:
-    st.write('lovelove')
+    st.write('The Diffie-Hellman key exchange, introduced by Whitfield Diffie and Martin Hellman in 1976, revolutionized modern cryptography by enabling secure communication over insecure channels without the need for pre-shared secrets. Their groundbreaking paper, "New Directions in Cryptography," laid the foundation for public-key cryptography, paving the way for the development of secure internet communication protocols and serving as a cornerstone in the field of modern cryptography.')
 # Function to perform modular exponentiation (base^exponent mod modulus)
 def mod_exp(base, exponent, modulus):
     result = 1
