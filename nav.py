@@ -9,7 +9,7 @@ def navi():
     with columns[1]:
         st.page_link("pages/ROT13.py", label="ROT13", icon="🗝️", use_container_width=True)
     with columns[2]:
-        st.page_link("pages/Simple_Substitution_Cipher", label="Simple Substitution Cipher", icon="🗝️", use_container_width=True)
+        st.page_link("pages/Simple_Substitution_Cipher.py", label="Simple Substitution Cipher", icon="🗝️", use_container_width=True)
     st.markdown('---')
     with columns2[0]:
         st.page_link("pages/MD5_Hash.py", label="MD5", icon="🗝️", use_container_width=True)
