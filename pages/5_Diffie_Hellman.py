@@ -20,8 +20,8 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.header("Welcome to Simple RSA!🔐")
-st.header('RSA', divider='rainbow')
+st.header("Welcome to Simple Diffie Hellman!🔐")
+st.header('Deffie Hellman', divider='rainbow')
 
 on = st.toggle("Show History")
 
