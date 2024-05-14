@@ -1,17 +1,15 @@
 import streamlit as st
 
 def navi():
-    columns = st.columns((1,1,1,1))
+    columns = st.columns((1,1,1))
     columns2 = st.columns((1, 1, 1, 1))
 
     with columns[0]:
-        st.page_link("pages/XOR_Cipher.py", label="XOR Cipher", icon="🗝️", use_container_width=True)
+        st.page_link("pages/Reverse_Cipher.py", label="Reverse Cipher", icon="🗝️", use_container_width=True)
     with columns[1]:
-        st.page_link("pages/Caesar_Cipher.py", label="Caesar Cipher", icon="🗝️", use_container_width=True)
+        st.page_link("pages/ROT13.py", label="ROT13", icon="🗝️", use_container_width=True)
     with columns[2]:
-        st.page_link("pages/Primitive_Root.py", label="Primitive Root", icon="🗝️", use_container_width=True)
-    with columns[3]:
-        st.page_link("pages/Block_Cipher.py", label="Block Cipher", icon="🗝️", use_container_width=True)
+        st.page_link("pages/Simple_Substitution_Cipher", label="Simple Substitution Cipher", icon="🗝️", use_container_width=True)
     st.markdown('---')
     with columns2[0]:
         st.page_link("pages/MD5_Hash.py", label="MD5", icon="🗝️", use_container_width=True)
