@@ -79,6 +79,7 @@ elif genre == 'File':
     if uploaded_file is not None:
         # Read file contents as string
         file_contents = uploaded_file.getvalue().decode("utf-8")
+        data = file.read(65536) 
         st.write("File contents:", file_contents)
 
         # Compute SHA1 hash of file contents
