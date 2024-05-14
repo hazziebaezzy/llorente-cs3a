@@ -16,7 +16,7 @@ st.header('ROT13', divider='rainbow')
 on = st.toggle("Show History")
 
 if on:
-    st.write('')
+    st.write('ROT13, short for "Rotate by 13 places," is a simple substitution cipher used to obscure text by replacing each letter with the letter thirteen positions ahead in the alphabet. It has a fascinating history, dating back to the early days of Usenet, an early online messaging system. Usenet users employed ROT13 as a means to hide spoilers or sensitive content while still allowing interested readers to easily decode the message. Because ROT13 is a symmetric cipher, meaning the same algorithm can be used for both encryption and decryption, it gained popularity for its simplicity and convenience. Despite its lack of robust security, ROT13 remains in use today in various contexts, often as a playful or nostalgic nod to its origins in early internet culture.')
 
 def rot13_encrypt(text):
     encrypted_text = ""
