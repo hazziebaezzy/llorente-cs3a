@@ -1,7 +1,7 @@
 import streamlit as st
 
 def navi():
-    columns = st.columns((1,1,1))
+    columns = st.columns((1,1,1,1,1))
     columns2 = st.columns((1, 1, 1, 1))
 
     with columns[0]:
@@ -10,6 +10,10 @@ def navi():
         st.page_link("pages/ROT13.py", label="ROT13", icon="🗝️", use_container_width=True)
     with columns[2]:
         st.page_link("pages/Simple_Substitution_Cipher.py", label="Simple Substitution Cipher", icon="🗝️", use_container_width=True)
+    with columns[3]:
+        st.page_link("pages/RSA.py", label="RSA", icon="🗝️", use_container_width=True)
+    with columns[4]:
+        st.page_link("pages/Diffie_Hellman.py", label="Diffie Hellman", icon="🗝️", use_container_width=True)
     st.markdown('---')
     with columns2[0]:
         st.page_link("pages/MD5_Hash.py", label="MD5", icon="🗝️", use_container_width=True)
