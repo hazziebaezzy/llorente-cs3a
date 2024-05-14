@@ -1,6 +1,32 @@
 import random
 import streamlit as st
 
+from nav import navi
+
+st.set_page_config(
+        page_title="RSA",
+        page_icon="🔐",
+        layout="wide"
+    )
+
+navi()
+
+st.markdown("""
+    <style>
+         textarea {
+            color: #fb6f92 !important;
+         }
+            
+    </style>
+""", unsafe_allow_html=True)
+
+st.header("Welcome to Simple RSA!🔐")
+st.header('RSA', divider='rainbow')
+
+on = st.toggle("Show History")
+
+if on:
+    st.write('lovelove')
 # Function to perform modular exponentiation (base^exponent mod modulus)
 def mod_exp(base, exponent, modulus):
     result = 1
