@@ -1,10 +1,16 @@
 import streamlit as st
+from nav import navi 
 
-st.header("Caesar Cipher🔐")
-st.sidebar.write("Caesar Cipher🔐")
+st.set_page_config(
+        page_title="Caesar Cipher",
+        page_icon="🔐",
+        layout="wide"
+    )
 
+navi()
 
-st.write("Welcome to Caesar Cipher!!")
+st.header(" Welcome to Caesar Cipher!🔐")
+st.header('CAESAR CIPHER', divider='rainbow')
 
 def encrypt_decrypt(text, shift_keys, ifdecrypt):
     result = ""
@@ -31,11 +37,9 @@ if st.button('Submit', type="primary"):
         elif not shift_keys:
             st.warning('Please input shift keys!!')
         else:
-            encrypted_text = encrypt_decrypt(text, shift_keys, False)
-            decrypted_text = encrypt_decrypt(encrypted_text, shift_keys, True)
+            encrypted = encrypt_decrypt(text, shift_keys, False)
+            decrypted = encrypt_decrypt(encrypted, shift_keys, True)
             st.write("Text:", text)
             st.write("Shift keys:", " ".join(map(str, shift_keys)))
-            st.write("Cipher:", encrypted_text)
-            st.write("Decrypted text:", decrypted_text)
-            st.balloons()
-            st.snow()
+            st.write("Cipher:", encrypted)
+            st.write("Decrypted text:", decrypted)
