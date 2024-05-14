@@ -6,7 +6,7 @@ LOGGER = get_logger(__name__)
 
 def run():
     st.set_page_config(
-        page_title="navi",
+        page_title="Navi",
         page_icon="👋",
     )
 
