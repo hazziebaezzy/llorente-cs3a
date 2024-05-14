@@ -1,7 +1,4 @@
 import streamlit as st
-from streamlit.logger import get_logger
-
-LOGGER = get_logger(__name__)
 
 
 def run():
@@ -35,7 +32,3 @@ def navi():
         st.page_link("pages/8_Blake2.py", label="BLAKE2", icon="🗝️", use_container_width=True)
     with columns2[3]:
         st.page_link("pages/9_RIPEMD-160.py", label="WHIRLPOOL", icon="🗝️", use_container_width=True)
-
-
-if __name__ == "__main__":
-    run()
