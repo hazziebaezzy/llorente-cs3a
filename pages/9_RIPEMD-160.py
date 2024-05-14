@@ -36,7 +36,7 @@ st.header('RIPEMD-160', divider='rainbow')
 on = st.toggle("Show History")
 
 if on:
-    st.write('')
+    st.write('RIPEMD-160, which stands for "RACE Integrity Primitives Evaluation Message Digest-160," is a cryptographic hash function developed by Hans Dobbertin, Antoon Bosselaers, and Bart Preneel in 1996. It was designed as an improvement over the original RIPEMD hash function, offering a longer output size and improved resistance against collision attacks. RIPEMD-160 gained recognition for its usage in various cryptographic applications, including digital signatures and data integrity verification, contributing to the broader landscape of secure communication and data protection.')
 
 def compute_ripemd160(input_string):
     # Create a RIPEMD-160 hash object
