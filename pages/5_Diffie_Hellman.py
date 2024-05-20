@@ -53,7 +53,7 @@ def decrypt_message(encrypted_message, shared_secret):
 p = 100043
 g = 100003
 
-st.write("Bob and Alice agreement:", g, "mod", p)
+st.write("Agreement:", g, "mod", p)
 
 
 # Generate private keys
@@ -72,15 +72,15 @@ bob_shared_secret = generate_shared_secret(bob_private_num, alice_public_key, p)
 assert alice_shared_secret == bob_shared_secret
 
 # UI for Alice's encryption
-st.subheader("Alice's Encryption")
-alice_message = st.text_input("Alice, enter your message:")
-if st.button("Alice Encrypt Message"):
+st.subheader("Encryption")
+alice_message = st.text_input("Enter your message:")
+if st.button("Encrypt Message"):
     alice_encrypted_message = encrypt_message(alice_message, alice_shared_secret)
-    st.write("Alice's Encrypted Message:", alice_encrypted_message)
+    st.write("Encrypted Message:", alice_encrypted_message)
 
 # UI for Bob's decryption
-st.subheader("Bob's Decryption")
-bob_encrypted_message = st.text_input("Bob, enter Alice's encrypted message:")
-if st.button("Bob Decrypt Message"):
+st.subheader("Decryption")
+bob_encrypted_message = st.text_input("Enter encrypted message:")
+if st.button("Decrypt Message"):
     bob_decrypted_message = decrypt_message(bob_encrypted_message, bob_shared_secret)
-    st.write("Bob's Decrypted Message:", bob_decrypted_message)
+    st.write("Decrypted Message:", bob_decrypted_message)
