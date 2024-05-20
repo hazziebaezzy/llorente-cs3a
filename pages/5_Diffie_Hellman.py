@@ -51,6 +51,10 @@ def decrypt_message(encrypted_message, shared_secret):
 
 st.write("Bob and Alice agreement:", g, "mod", p)
 
+# Parameters
+p = 100043
+g = 100003
+
 # Generate private keys
 alice_private_num = generate_private_number(p)
 bob_private_num = generate_private_number(p)
