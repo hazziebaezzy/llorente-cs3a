@@ -49,11 +49,12 @@ def decrypt_message(encrypted_message, shared_secret):
     message = ''.join(chr(ord(c) ^ shared_secret) for c in encrypted_message)
     return message
 
-st.write("Bob and Alice agreement:", g, "mod", p)
-
 # Parameters
 p = 100043
 g = 100003
+
+st.write("Bob and Alice agreement:", g, "mod", p)
+
 
 # Generate private keys
 alice_private_num = generate_private_number(p)
