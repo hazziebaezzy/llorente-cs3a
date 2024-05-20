@@ -86,10 +86,9 @@ if st.button("Encrypt"):
         st.error("Please provide a public key and a message.")
 
 # Decrypt Message
-private_key_pem = st.text_area("Private Key (PEM format)", height=200)
+
 encrypted_message_hex = st.text_area("Encrypted Message (hex)", height=200)
 if st.button("Decrypt"):
-    if private_key_pem and encrypted_message_hex:
         try:
             private_key = serialization.load_pem_private_key(private_key_pem.encode(), password=None)
             encrypted_message = bytes.fromhex(encrypted_message_hex)
