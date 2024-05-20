@@ -4,7 +4,7 @@ import streamlit as st
 from nav import navi
 
 st.set_page_config(
-    page_title="RSA",
+    page_title="Diffie Hellman",
     page_icon="🔐",
     layout="wide"
 )
