@@ -3,6 +3,24 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 
+from nav import navi
+
+st.set_page_config(
+        page_title="Rivest-Shamir-Adleman (RSA)",
+        page_icon="🔐",
+        layout="wide"
+    )
+
+navi()
+
+st.header("Welcome to Rivest-Shamir-Adleman (RSA)!🔐")
+st.header('Rivest-Shamir-Adleman (RSA)', divider='rainbow')
+
+on = st.toggle("Show History")
+
+if on:
+    st.write('The Rivest-Shamir-Adleman (RSA) encryption algorithm, developed in 1977 by Ron Rivest, Adi Shamir, and Leonard Adleman, is a widely used form of asymmetric cryptography that enables secure data transmission by using a pair of public and private keys.')
+
 # Function to generate RSA keys
 def generate_rsa_keys():
     private_key = rsa.generate_private_key(
@@ -47,23 +65,6 @@ def decrypt_message(encrypted_message, private_key):
             label=None
         )
     ).decode()
-from nav import navi
-# Streamlit UI
-st.set_page_config(
-    page_title="RSA Cryptography Application",
-    page_icon="🔐",
-    layout="wide"
-)
-
-st.markdown("""
-    <style>
-         textarea {
-            color: #fb6f92 !important;
-         }
-    </style>
-""", unsafe_allow_html=True)
-
-st.header("RSA Cryptography Application")
 
 # State to store keys
 if 'private_key' not in st.session_state:
