@@ -30,89 +30,89 @@ on = st.toggle("Show History")
 if on:
     st.write('The Diffie-Hellman key exchange, introduced by Whitfield Diffie and Martin Hellman in 1976, revolutionized modern cryptography by enabling secure communication over insecure channels without the need for pre-shared secrets. Their groundbreaking paper, "New Directions in Cryptography," laid the foundation for public-key cryptography, paving the way for the development of secure internet communication protocols and serving as a cornerstone in the field of modern cryptography.')
 
-# Function to perform modular exponentiation (base^exponent mod modulus)
-def mod_exp(base, exponent, modulus):
-    result = 1
-    base = base % modulus
-    while exponent > 0:
-        if exponent % 2 == 1:
-            result = (result * base) % modulus
-        exponent //= 2
-        base = (base * base) % modulus
-    return result
+# Function to generate DH parameters and keys
+def generate_dh_parameters():
+    parameters = dh.generate_parameters(generator=2, key_size=2048)
+    private_key = parameters.generate_private_key()
+    public_key = private_key.public_key()
+    return parameters, private_key, public_key
 
-# Function to generate keys for Alice and Bob
-def generate_keys(p, g):
-    # Choose private keys for Alice and Bob
-    a = random.randint(2, p - 2)
-    b = random.randint(2, p - 2)
-    # Compute public keys for Alice and Bob
-    A = mod_exp(g, a, p)
-    B = mod_exp(g, b, p)
-    return a, A, b, B
+def serialize_key(key):
+    return key.public_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PublicFormat.SubjectPublicKeyInfo
+    )
 
-# Function to compute shared secret
-def compute_shared_secret(key, other_public_key, p):
-    # Compute shared secret
-    shared_secret = mod_exp(other_public_key, key, p)
-    return shared_secret
+def derive_shared_key(private_key, peer_public_key):
+    shared_key = private_key.exchange(peer_public_key)
+    derived_key = HKDF(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=None,
+        info=b'handshake data'
+    ).derive(shared_key)
+    return derived_key
 
-# Function to encrypt a message using AES
-def encrypt_message(shared_secret, plaintext):
-    backend = default_backend()
-    key = shared_secret.to_bytes(16, byteorder='big')
+def encrypt_message(message, key):
     iv = os.urandom(16)
-    cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=backend)
+    cipher = Cipher(algorithms.AES(key), modes.CFB(iv))
     encryptor = cipher.encryptor()
-    padder = padding.PKCS7(128).padder()
-    padded_data = padder.update(plaintext.encode()) + padder.finalize()
-    ciphertext = encryptor.update(padded_data) + encryptor.finalize()
-    return iv, ciphertext
+    encrypted_message = iv + encryptor.update(message.encode()) + encryptor.finalize()
+    return encrypted_message
 
-# Function to decrypt a message using AES
-def decrypt_message(shared_secret, iv, ciphertext):
-    backend = default_backend()
-    key = shared_secret.to_bytes(16, byteorder='big')
-    cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=backend)
+def decrypt_message(encrypted_message, key):
+    iv = encrypted_message[:16]
+    cipher = Cipher(algorithms.AES(key), modes.CFB(iv))
     decryptor = cipher.decryptor()
-    unpadder = padding.PKCS7(128).unpadder()
-    padded_data = decryptor.update(ciphertext) + decryptor.finalize()
-    plaintext = unpadder.update(padded_data) + unpadder.finalize()
-    return plaintext.decode()
+    decrypted_message = decryptor.update(encrypted_message[16:]) + decryptor.finalize()
+    return decrypted_message.decode()
 
-# Streamlit app
-st.title("Diffie-Hellman Key Exchange")
+# Generate DH Parameters and Keys
+if 'parameters' not in st.session_state:
+    st.session_state.parameters, st.session_state.private_key, st.session_state.public_key = generate_dh_parameters()
 
-# Input fields for prime modulus and base
-p = st.number_input("Enter prime modulus (p)", value=89)
-g = st.number_input("Enter base (g)", value=5)
+if st.button("Generate Diffie-Hellman Keys"):
+    st.session_state.parameters, st.session_state.private_key, st.session_state.public_key = generate_dh_parameters()
+    st.text_area("Your Public Key", serialize_key(st.session_state.public_key).decode(), height=200)
 
-# Button to generate keys and compute shared secret
-if st.button("Generate Keys and Compute Shared Secret"):
-    # Generate keys for Alice and Bob
-    alice_private_key, alice_public_key, bob_private_key, bob_public_key = generate_keys(p, g)
+# Encrypt Message
+peer_public_key_pem = st.text_area("Peer Public Key (PEM format)", height=200)
+message = st.text_input("Message to encrypt")
 
-    # Compute shared secret for Alice and Bob
-    alice_shared_secret = compute_shared_secret(alice_private_key, bob_public_key, p)
-    bob_shared_secret = compute_shared_secret(bob_private_key, alice_public_key, p)
-
-    # Display shared secrets
-    st.write("Alice's shared secret:", alice_shared_secret)
-    st.write("Bob's shared secret:", bob_shared_secret)
-
-    # Check if shared secrets match
-    if alice_shared_secret == bob_shared_secret:
-        st.write("Shared secrets match. Ready to encrypt and decrypt messages.")
+if st.button("Encrypt"):
+    if peer_public_key_pem and message:
+        try:
+            peer_public_key = serialization.load_pem_public_key(peer_public_key_pem.encode())
+            shared_key = derive_shared_key(st.session_state.private_key, peer_public_key)
+            encrypted_message = encrypt_message(message, shared_key)
+            st.text_area("Encrypted Message (hex)", encrypted_message.hex(), height=200)
+        except Exception as e:
+            st.error(f"Error during encryption: {e}")
     else:
-        st.write("Shared secrets do not match. Please try again.")
+        st.error("Please provide a peer public key and a message.")
 
-    # Input field for plaintext message
-    plaintext = st.text_area("Enter a message to encrypt")
+# Decrypt Message
+encrypted_message_hex = st.text_area("Encrypted Message (hex)", height=200)
 
-    if plaintext:
-        iv, ciphertext = encrypt_message(alice_shared_secret, plaintext)
-        st.write("Encrypted message (hex):", ciphertext.hex())
+if st.button("Decrypt"):
+    if encrypted_message_hex:
+        try:
+            encrypted_message = bytes.fromhex(encrypted_message_hex)
+            shared_key = derive_shared_key(st.session_state.private_key, st.session_state.peer_public_key)
+            message = decrypt_message(encrypted_message, shared_key)
+            st.text_area("Decrypted Message", message, height=200)
+        except Exception as e:
+            st.error(f"Error during decryption: {e}")
+    else:
+        st.error("Please provide an encrypted message.")
 
-        # Decrypt the message
-        decrypted_message = decrypt_message(bob_shared_secret, iv, ciphertext)
-        st.write("Decrypted message:", decrypted_message)
+# Save the peer public key in the session state for decryption
+if 'peer_public_key' not in st.session_state:
+    st.session_state.peer_public_key = None
+
+if st.button("Set Peer Public Key"):
+    if peer_public_key_pem:
+        st.session_state.peer_public_key = serialization.load_pem_public_key(peer_public_key_pem.encode())
+        st.success("Peer public key set successfully.")
+    else:
+        st.error("Please provide a peer public key.")
