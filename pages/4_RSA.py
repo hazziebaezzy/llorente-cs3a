@@ -65,9 +65,17 @@ st.markdown("""
 
 st.header("RSA Cryptography Application")
 
+# State to store keys
+if 'private_key' not in st.session_state:
+    st.session_state.private_key = None
+if 'public_key' not in st.session_state:
+    st.session_state.public_key = None
+
 # Generate RSA Keys
 if st.button("Generate RSA Keys"):
     private_key, public_key = generate_rsa_keys()
+    st.session_state.private_key = private_key
+    st.session_state.public_key = public_key
     st.text_area("Private Key", serialize_key(private_key, private=True).decode(), height=200)
     st.text_area("Public Key", serialize_key(public_key).decode(), height=200)
 
@@ -86,15 +94,14 @@ if st.button("Encrypt"):
         st.error("Please provide a public key and a message.")
 
 # Decrypt Message
-
 encrypted_message_hex = st.text_area("Encrypted Message (hex)", height=200)
 if st.button("Decrypt"):
+    if st.session_state.private_key and encrypted_message_hex:
         try:
-            private_key = serialization.load_pem_private_key(private_key_pem.encode(), password=None)
             encrypted_message = bytes.fromhex(encrypted_message_hex)
-            message = decrypt_message(encrypted_message, private_key)
+            message = decrypt_message(encrypted_message, st.session_state.private_key)
             st.text_area("Decrypted Message", message, height=200)
         except Exception as e:
             st.error(f"Error during decryption: {e}")
     else:
-        st.error("Please provide a private key and an encrypted message.")
+        st.error("Please generate RSA keys and provide an encrypted message.")
